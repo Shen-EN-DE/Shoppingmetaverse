@@ -2,6 +2,7 @@ import moment from "moment";
 
 
 export const config = {
+    infuraId: '61215055bc184343a0c558fde59fa107',
     supportedToken: ['0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
         '0xD533a949740bb3306d119CC777fa900bA034cd52',
         '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'],

@@ -38,5 +38,15 @@
   },
   "overrides": {
     "autoprefixer": "10.4.5"
+  },
+  "description": "This examples uses [Create React App](https://create-react-app.dev).",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Krypto-Camp/batch3-final-project-team-1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Krypto-Camp/batch3-final-project-team-1/issues"
   }
 }

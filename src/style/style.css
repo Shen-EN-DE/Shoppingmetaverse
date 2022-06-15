@@ -121,6 +121,31 @@ ol {
     list-style: none;
 }
 
+td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+tr>th {
+    text-align: center;
+}
+
+.paybackbtn {
+    font-size: 16px;
+    transition: ease-in all 0.5s;
+    background-color: #fff;
+    color: #ef4259;
+    padding: 0.75rem;
+    margin: 0 auto;
+    display: block;
+}
+
+.currentLevel>td {
+    background-color: #fff !important;
+    color: #ef4259 !important;
+    box-shadow: none !important;
+}
+
 p {
     margin: 0px;
     font-weight: 300;
@@ -148,6 +173,10 @@ a,
 img {
     max-width: 100%;
     height: auto;
+}
+
+#logo {
+    height: 3rem;
 }
 
 :focus {
@@ -586,6 +615,7 @@ button {
 .contact {
     padding-top: 90px;
     font-family: Poppins;
+    height: 32.5rem
 }
 
 .main_form {

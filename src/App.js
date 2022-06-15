@@ -13,9 +13,12 @@ import {
     configureChains,
 } from "wagmi";
 
+import { config } from './config';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { publicProvider } from "wagmi/providers/public";
+import { infuraProvider } from 'wagmi/providers/infura'
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
+import { InjectedConnector } from '@wagmi/core';
 
 const App = () => {
     const { chains, provider, webSocketProvider } = configureChains(
@@ -33,7 +36,7 @@ const App = () => {
     const client = createClient({
         autoConnect: true,
         connectors: [
-            new MetaMaskConnector({ chains }),
+            new MetaMaskConnector({ chains })
         ],
         provider,
         webSocketProvider,

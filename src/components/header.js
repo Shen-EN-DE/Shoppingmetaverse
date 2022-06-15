@@ -2,6 +2,7 @@ import React from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { routes } from '../pages/routes'
+import logo from '../style/images/logo.png'
 
 const Header = () => {
     return (
@@ -13,7 +14,7 @@ const Header = () => {
                             <div className="full">
                                 <div className="center-desk">
                                     <div className="logo">
-                                        <a href="index.html"><img src="images/logo.png" alt="#" /></a>
+                                        <Link to={routes.home}><img id="logo" src={logo} alt="#" /></Link>
                                     </div>
                                 </div>
                             </div>

@@ -1,1 +1,3 @@
-# batch3-final-project-team-1
+# Create React App Example
+
+This examples uses [Create React App](https://create-react-app.dev).

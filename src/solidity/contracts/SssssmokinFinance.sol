@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+
 // 不支援的貨幣
 error NotProvideToken();
 // 不在有效期限內
@@ -19,15 +20,22 @@ error NotEnoughCredit();
 error RepaymentNotCorrect();
 
 contract SssssmokinFinance is Ownable {
+
     event DepositForTokenSuccess(
-        uint256 amount,
-        address token,
-        uint256 exchange
+        uint256 indexed amount,
+        address indexed token,
+        uint256 indexed exchange
     );
 
-    event DepositForEthSuccess(uint256 indexed amount, uint256 indexed exchange);
+    event DepositForEthSuccess(
+        uint256 indexed amount,
+        uint256 indexed exchange
+    );
 
-    event RepaymentSucess(uint256 pos, uint256 indexed remain);
+    event RepaymentSucess(
+        uint256 pos,
+        uint256 indexed remain
+    );
 
     // 福利
     struct Benefits {

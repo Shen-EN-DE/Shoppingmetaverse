@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+// Chain link Oracle 
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 // 不支援的貨幣
 error NotProvideToken();
@@ -18,6 +20,11 @@ error NotEnoughStock();
 error NotEnoughCredit();
 // 還款額不足
 error RepaymentNotCorrect();
+
+error InvalidTokenAdrress();
+error InvalidChainlinkAdrress();
+
+error InvalidPrice();
 
 contract SssssmokinFinance is Ownable {
 
@@ -69,14 +76,17 @@ contract SssssmokinFinance is Ownable {
     // 瞎幣合約
     IERC20 public weeeeToken;
 
-    // 支持的加密貨幣
-    mapping(address => bool) public provideTokens;
+    // 支持的加密貨幣 // ERC20 Token address => Chainlink Token/USD Feed Data Address
+    mapping(address => address) private provideTokens;
 
     // 支持的加密貨幣
     address[] public provideTokensArray;
 
+    // ETH / USD Chainlink
+    address private ethPricefeed;
+
     // 會員福利表
-    mapping(uint256 => Benefits) membershipBenefits;
+    mapping(uint256 => Benefits) private membershipBenefits;
 
     // 會員nft編號優先序列表 高到低 金 > 銀 > 銅
     uint256[] public tokenIdOrder;
@@ -90,28 +100,49 @@ contract SssssmokinFinance is Ownable {
 
     receive() external payable {}
 
+
+    constructor() {
+        setETHChainLink(0x8A753747A1Fa494EC906cE90E9f37563A8AF630e);
+    }
+
     // 檢查是否支持的貨幣
     modifier checkProvideToken(address token) {
-        if (provideTokens[token] != true) {
+        if (provideTokens[token] == address(0)) {
             revert NotProvideToken();
         }
         _;
     }
 
-    /// region OnlyOwner
+    /// region OnlyOwner89p[0--]
+    function setETHChainLink(address chainlink) public onlyOwner {
+        ethPricefeed = chainlink;
+    }
 
     // 增添支持貨幣
-    function addProvideTokens(address token) public onlyOwner {
-        if (provideTokens[token] == true) {
+    function setProvideTokens(address token, address chainlink) public onlyOwner {
+        address empty = address(0);
+        if (token == empty) {
+            revert InvalidTokenAdrress(); 
+        }
+
+        if (chainlink == empty) {
+            revert InvalidChainlinkAdrress(); 
+        }
+
+        address old = provideTokens[token];
+        if (chainlink == old) {
             return;
         }
-        provideTokens[token] = true;
-        provideTokensArray.push(token);
+
+        provideTokens[token] = chainlink;
+        if (old == empty) {
+            provideTokensArray.push(token);
+        }
     }
 
     // 移除支持貨幣 盡可能使用這個
     function removeProvideTokens(uint256 pos) public onlyOwner {
-        provideTokens[provideTokensArray[pos]] = false;
+        provideTokens[provideTokensArray[pos]] = address(0);
         uint256 last = provideTokensArray.length - 1;
         if (pos < last) {
             provideTokensArray[pos] = provideTokensArray[last];
@@ -121,7 +152,7 @@ contract SssssmokinFinance is Ownable {
 
     // 移除支持貨幣
     function removeProvideTokens(address token) public onlyOwner {
-        provideTokens[token] = false;
+        provideTokens[token] = address(0);
 
         for (uint256 i = 0; i < provideTokensArray.length; i++) {
             if (provideTokensArray[i] == token) {
@@ -153,7 +184,7 @@ contract SssssmokinFinance is Ownable {
 
     // 詢問是否支持的貨幣
     function isProvideToken(address token) public view returns (bool) {
-        return provideTokens[token];
+        return provideTokens[token] != address(0);
     }
 
     // 取得全部會員NFT福利
@@ -243,11 +274,20 @@ contract SssssmokinFinance is Ownable {
         if (benefits.credit < reqireMargin) {
             revert NotEnoughCredit();
         }
-        // 要由預言機取得的數值
-        uint256 linkPrice = 1 ether / uint256(3000);
 
+        // 由預言機取得數值
+        AggregatorV3Interface feed = AggregatorV3Interface(provideTokens[token]);
+        uint8 tarDecimals = feed.decimals();
+        ( , int256 price, , , ) = feed.latestRoundData();
+        if (price < 0) {
+            revert InvalidPrice();
+        }
+
+        uint256 linkPrice = uint256(price);
+        // ((amount / 10**18) * (benefits.ratio / 100)) / (linkPrice / (10 ** tarDecimals))
+        // (amount * benefits.ratio) / (linkPrice * 10 ** (20 - tarDecimals));
         // 數量 乘上抵押率
-        uint256 exchange = (amount * benefits.ratio * linkPrice) / 100;
+        uint256 exchange = (amount * benefits.ratio) / (linkPrice * (10 ** uint256(20 - tarDecimals)));
         IERC20 tar = IERC20(token);
         uint256 balance = tar.balanceOf(address(this));
         if (balance < exchange) {
@@ -275,16 +315,30 @@ contract SssssmokinFinance is Ownable {
     }
 
     function deposit(uint256 amount) public {
+        // eth oracle address == 0 不支持 eth
+        if (ethPricefeed == address(0)) {
+            revert NotProvideToken(); 
+        }
+
         Benefits memory benefits = getUserBenifits();
         uint256 reqireMargin = getMargin() + amount;
         if (benefits.credit < reqireMargin) {
             revert NotEnoughCredit();
         }
-        // 要由預言機取得的數值
-        uint256 linkPrice = 1 ether / uint256(3000);
 
+        // 由預言機取得數值
+        AggregatorV3Interface feed = AggregatorV3Interface(ethPricefeed);
+        uint8 tarDecimals = feed.decimals();
+        ( , int256 price, , , ) = feed.latestRoundData();
+        if (price < 0) {
+            revert InvalidPrice();
+        }
+
+        uint256 linkPrice = uint256(price);
+        // ((amount / 10**18) * (benefits.ratio / 100)) / (linkPrice / (10 ** tarDecimals))
+        // (amount * benefits.ratio) / (linkPrice * 10 ** (20 - tarDecimals));
         // 數量 乘上抵押率
-        uint256 exchange = (amount * benefits.ratio * linkPrice) / 100;
+        uint256 exchange = (amount * benefits.ratio) / (linkPrice * (10 ** uint256(20 - tarDecimals)));
         address me = address(this);
         if (me.balance < exchange) {
             revert NotEnoughStock();

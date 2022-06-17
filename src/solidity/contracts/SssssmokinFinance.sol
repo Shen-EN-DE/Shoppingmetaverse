@@ -399,6 +399,33 @@ contract SssssmokinFinance is Ownable {
         emit RepaymentSucess(pos, remain);
     }
 
+    // price, decimel
+    function getTokenFeed(address token) public view
+        checkProvideToken(token)
+        returns(int256, uint8)
+    {
+        return getTokenFeedWithChainlink(provideTokens[token]);
+    }
+
+    function getETHFeed() public view
+        returns(int256, uint8)
+    {
+        if (ethPricefeed == address(0)) {
+            revert NotProvideToken(); 
+        }
+        return getTokenFeedWithChainlink(ethPricefeed);
+    }
+
+    function getTokenFeedWithChainlink(address aggregator) private view
+        returns(int256, uint8)
+    {
+        // 由預言機取得數值
+        AggregatorV3Interface feed = AggregatorV3Interface(aggregator);
+        uint8 decimals = feed.decimals();
+        ( , int256 price, , , ) = feed.latestRoundData();
+        return (price, decimals);
+    }
+
     /*
     function giveup(uint pos) public {
         Loan[] storage laoning = memberLoaning[_msgSender()];

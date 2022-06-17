@@ -240,11 +240,11 @@ contract SssssmokinFinance is Ownable {
         revert NoneBenifits();
     }
 
-    function getUserBenifits() public view returns (Benefits memory) {
+    function getSenderBenifits() public view returns (Benefits memory) {
         return getUserBenifits(_msgSender());
     }
 
-    function getMargin(address user) public view returns (uint256) {
+    function getUserMargin(address user) public view returns (uint256) {
         uint256 margin = 0;
         Loan[] memory loanDatas = memberLoaning[user];
         for (uint256 i = 0; i < loanDatas.length; i++) {
@@ -253,15 +253,15 @@ contract SssssmokinFinance is Ownable {
         return margin;
     }
 
-    function getMargin() public view returns (uint256) {
-        return getMargin(_msgSender());
+    function getSenderMargin() public view returns (uint256) {
+        return getUserMargin(_msgSender());
     }
 
     function getUserLoaning(address user) public view returns (Loan[] memory) {
         return memberLoaning[user];
     }
 
-    function getUserLoaning() public view returns (Loan[] memory) {
+    function getSenderLoaning() public view returns (Loan[] memory) {
         return getUserLoaning(_msgSender());
     }
 
@@ -269,8 +269,8 @@ contract SssssmokinFinance is Ownable {
         public
         checkProvideToken(token)
     {
-        Benefits memory benefits = getUserBenifits();
-        uint256 reqireMargin = getMargin() + amount;
+        Benefits memory benefits = getSenderBenifits();
+        uint256 reqireMargin = getSenderMargin() + amount;
         if (benefits.credit < reqireMargin) {
             revert NotEnoughCredit();
         }
@@ -314,14 +314,14 @@ contract SssssmokinFinance is Ownable {
         emit DepositForTokenSuccess(amount, token, exchange);
     }
 
-    function deposit(uint256 amount) public {
+    function depositETH(uint256 amount) public {
         // eth oracle address == 0 不支持 eth
         if (ethPricefeed == address(0)) {
             revert NotProvideToken(); 
         }
 
-        Benefits memory benefits = getUserBenifits();
-        uint256 reqireMargin = getMargin() + amount;
+        Benefits memory benefits = getSenderBenifits();
+        uint256 reqireMargin = getSenderMargin() + amount;
         if (benefits.credit < reqireMargin) {
             revert NotEnoughCredit();
         }

@@ -47,6 +47,7 @@ contract ShrimpNFT is ERC1155, Ownable, ERC1155Burnable  {
         _mintBatch(to, ids, amounts, data);
     }
 
+    //使用者主動換取ShrimpNFT
     function GetNFT () public returns(string memory){
 
         uint ShrimpNFTLevel = stakingToken.isLevel(msg.sender);
@@ -74,11 +75,12 @@ contract ShrimpNFT is ERC1155, Ownable, ERC1155Burnable  {
         
         
     }
-
+    
+    //查詢使用者擁有之NFT階級
     function InquireUserNFT (address UserAddress) public view returns (string memory) {
         uint256 UserNFTId =3 ;
         
-        //以擁有最高階級的NFT回傳階級數值
+        //以擁有最高階級的NFT回傳階級參數
         
         if(balanceOf(UserAddress,2) >= 1){
             UserNFTId = 0;

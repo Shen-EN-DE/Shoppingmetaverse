@@ -19,12 +19,12 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 module.exports = {
   solidity: "0.8.9",
   networks: {
-    // rinkeby: {
-    //   url: "https://rinkeby.infura.io/v3/61215055bc184343a0c558fde59fa107",
-    //   accounts: ["8f9449dd486083bfbd8bf0fc44891d02e22f1f6bb0a863184c764962a1ff7795"]
-    // },
-    hardhat: {
-      chainId: 1337
+    rinkeby: {
+      url: "https://rinkeby.infura.io/v3/61215055bc184343a0c558fde59fa107",
+      accounts: ["8f9449dd486083bfbd8bf0fc44891d02e22f1f6bb0a863184c764962a1ff7795"]
     },
+    // hardhat: {
+    //   chainId: 1337
+    // },
   },
 };

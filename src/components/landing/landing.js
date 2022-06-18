@@ -5,15 +5,7 @@ import Hero from '../../style/images/img.png'
 
 
 const Landing = () => {
-    const [
-        {
-            data: { connector, connectors },
-            error,
-            loading,
-        },
-        connect,
-    ] = useConnect()
-    console.log(connectors)
+
     return (
         <section className='banner_main'>
             <Container>
@@ -25,13 +17,7 @@ const Landing = () => {
                             <p>1232432</p>
                             <Row>
                                 <Col>
-                                    {connectors.map((x, i) => (
-                                        <a disabled={!x.ready} key={`${x.name}-${i}`} onClick={() => connect(x)}>
-                                            {x.name}
-                                            {!x.ready && ' (unsupported)'}
-                                            {loading && x.name === connector?.name && '…'}
-                                        </a>
-                                    ))}
+
                                 </Col>
                                 {/* <Col>
                                     {activeConnector && (

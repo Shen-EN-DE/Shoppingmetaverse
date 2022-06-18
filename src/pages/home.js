@@ -4,19 +4,9 @@ import Landing from '../components/landing/landing';
 
 
 const Home = () => {
-  const { data } = useAccount()
 
   return (
-    <>
-      <Landing />
-
-      {data?.address && (
-        <>
-          {/* <Account /> */}
-          <NetworkSwitcher />
-        </>
-      )}
-    </>
+    <Landing />
   )
 }
 

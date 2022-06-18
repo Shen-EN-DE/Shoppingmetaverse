@@ -1,24 +1,82 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import { config } from '../config'
-import {
-    useConnect,
-    useAccount,
-    useNetwork,
-    useDisconnect,
-    useContractRead,
-    useContractWrite,
-    chain,
-    useProvider
-} from 'wagmi'
+import { BlockchainContext } from "../components/context/blockChainCtx";
+import { ethers } from 'ethers';
+
 import { DropdownButton, Dropdown, Col, Row, Container, Table } from 'react-bootstrap'
 
 const SssssmokinFinance = require('../solidity/artifacts/contracts/SssssmokinFinance.sol/SssssmokinFinance.json')
 const CONTRACT_ABI = SssssmokinFinance.abi
-const CONTRACT_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
+const CONTRACT_ADDRESS = '0xBCBC290FF335F0cAed7ce0Ed623cCEE294aa5074'
 
-const Lending = () => {
-    const allBenefits = localStorage.getItem('allBenefits')
-    const provider = useProvider();
+const Staking = () => {
+
+    const { currentAccount, provider, networkId, chainId } = useContext(BlockchainContext);
+    const [contract, setContract] = useState();
+    const [benefits, setBenefits] = useState([])
+
+    useEffect(() => {
+        if (provider) {
+            const signer = provider.getSigner();
+            provider.getBlock().then(block => {
+                const _contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider, {
+                    gasLimit: block.gasLimit
+                });
+
+                setContract(_contract.connect(signer));
+
+            })
+        }
+
+    }, [provider]);
+
+    useEffect(() => {
+
+        const getAllBenefits = async () => {
+            const _allBenefits = await contract.getAllBenefits();
+            setBenefits(_allBenefits);
+        }
+        const setTokenIdOrder = async () => {
+
+
+            await contract.setTokenIdOrder(
+                [0, 1, 2, 3]
+            );
+            // await contract.setBenefits(
+            //     2,
+            //     config.memberBenefits[2]
+            // );
+            // await contract.setBenefits(
+            //     3,
+            //     config.memberBenefits[3]
+            // );
+
+        }
+
+        const getBenefits = async () => {
+            const b = await contract.tokenIdOrder()
+            console.log(b)
+        }
+
+        const setTokens = async () => {
+            const c = await contract.setProvideTokens(config.supportedToken[0], config.chainLink[0])
+            const b = await contract.setProvideTokens(config.supportedToken[1], config.chainLink[1])
+            const d = await contract.setProvideTokens(config.supportedToken[2], config.chainLink[2])
+        }
+
+        const getAllProvideTokens = async () => {
+            const b = await contract.getAllProvideTokens()
+            console.log(b)
+        }
+
+        if (contract) {
+            // setTokenIdOrder()
+            getAllBenefits()
+            // getBenefits()
+            // setTokens()
+            getAllProvideTokens()
+        }
+    }, [contract]);
 
     // const { data: addedPT, isError: mintError, isLoading: isMintLoading, write: setProvideTokens } = useContractWrite(
     //     {
@@ -27,16 +85,6 @@ const Lending = () => {
     //     },
     //     'setProvideTokens'
     // )
-
-
-    const [{ data: _allBenefits }, getAllBenifits] = useContractRead(
-        {
-            addressOrName: CONTRACT_ADDRESS,
-            contractInterface: CONTRACT_ABI,
-            signerOrProvider: provider,
-        },
-        "getAllBenifits"
-    )
 
     // const [{ }, setBenifist] = useContractWrite(
     //     {
@@ -47,25 +95,6 @@ const Lending = () => {
     //     "setBenifist"
     // )
 
-    useEffect(() => {
-        // const set = async () => {
-        //     try {
-        //         const res = await setBenifist({ args: [1, config.memberBenefits[1]] })
-        //         const res1 = await setBenifist({ args: [2, config.memberBenefits[2]] })
-        //         const res2 = await setBenifist({ args: [3, config.memberBenefits[3]] })
-        //         console.log(res)
-        //     } catch (error) {
-        //         console.log(error)
-        //     }
-
-        // }
-        // set()
-        getAllBenifits().then(res => console.log(res)).catch(err => console.error(err))
-
-        localStorage.setItem('allBenefits', true)
-
-
-    }, [])
 
 
     return (
@@ -180,4 +209,4 @@ const Lending = () => {
     )
 }
 
-export default Lending
+export default Staking

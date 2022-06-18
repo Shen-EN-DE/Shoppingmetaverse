@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-// Chain link Oracle 
+// Chain link Oracle
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 // 不支援的貨幣
@@ -13,7 +13,7 @@ error NotProvideToken();
 // 不在有效期限內
 error NotInValidityPeriod();
 // 沒有任何權限
-error NoneBenifits();
+error NoneBenefits();
 // 沒有足夠的庫存
 error NotEnoughStock();
 // 沒有足夠的額度
@@ -27,7 +27,6 @@ error InvalidChainlinkAdrress();
 error InvalidPrice();
 
 contract SssssmokinFinance is Ownable {
-
     event DepositForTokenSuccess(
         uint256 indexed amount,
         address indexed token,
@@ -39,10 +38,7 @@ contract SssssmokinFinance is Ownable {
         uint256 indexed exchange
     );
 
-    event RepaymentSucess(
-        uint256 pos,
-        uint256 indexed remain
-    );
+    event RepaymentSucess(uint256 pos, uint256 indexed remain);
 
     // 福利
     struct Benefits {
@@ -100,7 +96,6 @@ contract SssssmokinFinance is Ownable {
 
     receive() external payable {}
 
-
     constructor() {
         setETHChainLink(0x8A753747A1Fa494EC906cE90E9f37563A8AF630e);
     }
@@ -119,14 +114,14 @@ contract SssssmokinFinance is Ownable {
     }
 
     // 增添支持貨幣
-    function setProvideTokens(address token, address chainlink) public onlyOwner {
+    function setProvideTokens(address token, address chainlink) public {
         address empty = address(0);
         if (token == empty) {
-            revert InvalidTokenAdrress(); 
+            revert InvalidTokenAdrress();
         }
 
         if (chainlink == empty) {
-            revert InvalidChainlinkAdrress(); 
+            revert InvalidChainlinkAdrress();
         }
 
         address old = provideTokens[token];
@@ -138,6 +133,10 @@ contract SssssmokinFinance is Ownable {
         if (old == empty) {
             provideTokensArray.push(token);
         }
+    }
+
+    function getAllProvideTokens() public view returns (address[] memory) {
+        return provideTokensArray;
     }
 
     // 移除支持貨幣 盡可能使用這個
@@ -171,12 +170,12 @@ contract SssssmokinFinance is Ownable {
     }
 
     // 設置會員福利 考慮到應該很少使用 真的需要單獨設置 再添加
-    function setBenifist(uint256 tokenId, Benefits calldata benifist) public {
-        membershipBenefits[tokenId] = benifist;
+    function setBenefits(uint256 tokenId, Benefits calldata benefits) public {
+        membershipBenefits[tokenId] = benefits;
     }
 
     // 移除會員福利
-    function removeBenifist(uint256 tokenId) public onlyOwner {
+    function removeBenefits(uint256 tokenId) public onlyOwner {
         delete membershipBenefits[tokenId];
     }
 
@@ -188,7 +187,7 @@ contract SssssmokinFinance is Ownable {
     }
 
     // 取得全部會員NFT福利
-    function getAllBenifits() public view returns (Benefits[] memory) {
+    function getAllBenefits() public view returns (Benefits[] memory) {
         Benefits[] memory benefits = new Benefits[](tokenIdOrder.length);
         for (uint256 i = 0; i < tokenIdOrder.length; i++) {
             benefits[i] = membershipBenefits[tokenIdOrder[i]];
@@ -197,7 +196,7 @@ contract SssssmokinFinance is Ownable {
     }
 
     // 取得指定會員NFT福利
-    function getBenifits(uint256 tokenId)
+    function getBenefits(uint256 tokenId)
         public
         view
         returns (Benefits memory)
@@ -209,7 +208,7 @@ contract SssssmokinFinance is Ownable {
         return membershipBenefits[tokenId].credit;
     }
 
-    function getUserBenifits(address user)
+    function getUserBenefits(address user)
         public
         view
         returns (Benefits memory)
@@ -228,7 +227,7 @@ contract SssssmokinFinance is Ownable {
                 continue;
             }
 
-            Benefits memory benifest = getBenifits(tokenIdOrder[j]);
+            Benefits memory benifest = getBenefits(tokenIdOrder[j]);
             if (
                 benifest.validityTime != 0 &&
                 benifest.validityTime > block.timestamp
@@ -237,11 +236,11 @@ contract SssssmokinFinance is Ownable {
             }
         }
 
-        revert NoneBenifits();
+        revert NoneBenefits();
     }
 
-    function getSenderBenifits() public view returns (Benefits memory) {
-        return getUserBenifits(_msgSender());
+    function getSenderBenefits() public view returns (Benefits memory) {
+        return getUserBenefits(_msgSender());
     }
 
     function getUserMargin(address user) public view returns (uint256) {
@@ -269,16 +268,18 @@ contract SssssmokinFinance is Ownable {
         public
         checkProvideToken(token)
     {
-        Benefits memory benefits = getSenderBenifits();
+        Benefits memory benefits = getSenderBenefits();
         uint256 reqireMargin = getSenderMargin() + amount;
         if (benefits.credit < reqireMargin) {
             revert NotEnoughCredit();
         }
 
         // 由預言機取得數值
-        AggregatorV3Interface feed = AggregatorV3Interface(provideTokens[token]);
+        AggregatorV3Interface feed = AggregatorV3Interface(
+            provideTokens[token]
+        );
         uint8 tarDecimals = feed.decimals();
-        ( , int256 price, , , ) = feed.latestRoundData();
+        (, int256 price, , , ) = feed.latestRoundData();
         if (price < 0) {
             revert InvalidPrice();
         }
@@ -287,7 +288,8 @@ contract SssssmokinFinance is Ownable {
         // ((amount / 10**18) * (benefits.ratio / 100)) / (linkPrice / (10 ** tarDecimals))
         // (amount * benefits.ratio) / (linkPrice * 10 ** (20 - tarDecimals));
         // 數量 乘上抵押率
-        uint256 exchange = (amount * benefits.ratio) / (linkPrice * (10 ** uint256(20 - tarDecimals)));
+        uint256 exchange = (amount * benefits.ratio) /
+            (linkPrice * (10**uint256(20 - tarDecimals)));
         IERC20 tar = IERC20(token);
         uint256 balance = tar.balanceOf(address(this));
         if (balance < exchange) {
@@ -317,10 +319,10 @@ contract SssssmokinFinance is Ownable {
     function depositETH(uint256 amount) public {
         // eth oracle address == 0 不支持 eth
         if (ethPricefeed == address(0)) {
-            revert NotProvideToken(); 
+            revert NotProvideToken();
         }
 
-        Benefits memory benefits = getSenderBenifits();
+        Benefits memory benefits = getSenderBenefits();
         uint256 reqireMargin = getSenderMargin() + amount;
         if (benefits.credit < reqireMargin) {
             revert NotEnoughCredit();
@@ -329,7 +331,7 @@ contract SssssmokinFinance is Ownable {
         // 由預言機取得數值
         AggregatorV3Interface feed = AggregatorV3Interface(ethPricefeed);
         uint8 tarDecimals = feed.decimals();
-        ( , int256 price, , , ) = feed.latestRoundData();
+        (, int256 price, , , ) = feed.latestRoundData();
         if (price < 0) {
             revert InvalidPrice();
         }
@@ -338,7 +340,8 @@ contract SssssmokinFinance is Ownable {
         // ((amount / 10**18) * (benefits.ratio / 100)) / (linkPrice / (10 ** tarDecimals))
         // (amount * benefits.ratio) / (linkPrice * 10 ** (20 - tarDecimals));
         // 數量 乘上抵押率
-        uint256 exchange = (amount * benefits.ratio) / (linkPrice * (10 ** uint256(20 - tarDecimals)));
+        uint256 exchange = (amount * benefits.ratio) /
+            (linkPrice * (10**uint256(20 - tarDecimals)));
         address me = address(this);
         if (me.balance < exchange) {
             revert NotEnoughStock();
@@ -400,29 +403,31 @@ contract SssssmokinFinance is Ownable {
     }
 
     // price, decimel
-    function getTokenFeed(address token) public view
+    function getTokenFeed(address token)
+        public
+        view
         checkProvideToken(token)
-        returns(int256, uint8)
+        returns (int256, uint8)
     {
         return getTokenFeedWithChainlink(provideTokens[token]);
     }
 
-    function getETHFeed() public view
-        returns(int256, uint8)
-    {
+    function getETHFeed() public view returns (int256, uint8) {
         if (ethPricefeed == address(0)) {
-            revert NotProvideToken(); 
+            revert NotProvideToken();
         }
         return getTokenFeedWithChainlink(ethPricefeed);
     }
 
-    function getTokenFeedWithChainlink(address aggregator) private view
-        returns(int256, uint8)
+    function getTokenFeedWithChainlink(address aggregator)
+        private
+        view
+        returns (int256, uint8)
     {
         // 由預言機取得數值
         AggregatorV3Interface feed = AggregatorV3Interface(aggregator);
         uint8 decimals = feed.decimals();
-        ( , int256 price, , , ) = feed.latestRoundData();
+        (, int256 price, , , ) = feed.latestRoundData();
         return (price, decimals);
     }
 

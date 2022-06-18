@@ -93,20 +93,17 @@ contract ShrimpToken is ERC20{
         require(customerList[customerAddr][thismonth].thresholdAmount >= 100, "not enough token");
 
         if(350 > customerList[customerAddr][thismonth].thresholdAmount && customerList[customerAddr][thismonth].thresholdAmount >= 100){
-            require(customerList[customerAddr][thismonth].customerLevel != Level.copper ,"you are already copper");
             customerList[customerAddr][thismonth].customerLevel = Level.copper;
             customerList[customerAddr][thismonth].thresholdAmount = ThresholdAmount - 100;
             ThresholdAmount = ThresholdAmount -100;
             return 1;
         }else if(1000 > customerList[customerAddr][thismonth].thresholdAmount && customerList[customerAddr][thismonth].thresholdAmount >= 350){
-            require(customerList[customerAddr][thismonth].customerLevel != Level.silver ,"you are already silver");
 
             customerList[customerAddr][thismonth].customerLevel = Level.silver;
             customerList[customerAddr][thismonth].thresholdAmount = ThresholdAmount - 350;
             ThresholdAmount = ThresholdAmount - 350;
             return 2;
         }else if(customerList[customerAddr][thismonth].thresholdAmount >= 1000){
-            require(customerList[customerAddr][thismonth].customerLevel != Level.gold ,"you are already gold");
 
             customerList[customerAddr][thismonth].customerLevel = Level.gold;
             customerList[customerAddr][thismonth].thresholdAmount = ThresholdAmount - 1000;

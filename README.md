@@ -10,16 +10,19 @@ Discord: [Shopbank](http://tobecontinuedcomic.com/) </br>
 
 ## Talk agenda on 2022.06.22
 
-
-Whitepaper 
-=================
-* [Shopbank Whiteaper](#shopbank-Whiteaper)
-   * [Abstract](#abstract)
+# Shopbank Whiteaper
+* [Abstract](#abstract)
    * [Why Shopbank](#why-shopbank)
       * [For users](#for-users)
-      * [For 項目方](#for-項目方)
-      * [Architecture](#architecture)
-# Shopbank Whiteaper
+      * [For 電商品牌方](#for-電商品牌方)
+   * [Architecture](#architecture)
+      * [點數價值轉移](#點數價值轉移)
+      * [代幣借貸](#代幣借貸)
+      * [永續成就](#永續成就)
+      * [DAO 投票](#dao-投票)
+   * [Roadmap](#roadmap)
+      * [2022-Q2](#2022-q2)
+   * [About Team](#about-team)
 
 ## Abstract
 我們看準了未來電商 3.0 的趨勢，我們建立了 Shopbank，以顛覆傳統電商2.0生態圈為我們的產品理念。

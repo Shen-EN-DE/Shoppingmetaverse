@@ -8,6 +8,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 // Chain link Oracle
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
+
+interface IERC20EX is IERC20 {
+   function decimals() external view returns (uint8);
+}
+
 // 不支援的貨幣
 error NotProvideToken();
 // 不在有效期限內
@@ -291,23 +296,11 @@ contract SssssmokinFinance is Ownable {
             revert NotEnoughCredit();
         }
 
-        // 由預言機取得數值
-        AggregatorV3Interface feed = AggregatorV3Interface(
-            provideTokens[token]
-        );
-        uint8 tarDecimals = feed.decimals();
-        (, int256 price, , , ) = feed.latestRoundData();
-        if (price < 0) {
-            revert InvalidPrice();
-        }
+        // 數量 乘上允許借貸比例
+        uint256 validAmount = (amount * benefits.ratio) / 100;
+        // 由預言機取得數值 轉換借貸比例可以取得多少
+        uint256 exchange = getTokenExchange(token, validAmount);
 
-        uint256 linkPrice = uint256(price);
-        // ((amount / 10**18) * (benefits.ratio / 100)) / (linkPrice / (10 ** tarDecimals))
-        // (amount * benefits.ratio) / (linkPrice * 10 ** (20 - tarDecimals));
-        // 數量 乘上抵押率
-        // 1 / (linkPrice / tarD) =  10**18 
-        uint256 exchange = (amount * benefits.ratio) /
-            (linkPrice * (10**uint256(20 - tarDecimals)));
         IERC20 tar = IERC20(token);
         uint256 balance = tar.balanceOf(address(this));
         if (balance < exchange) {
@@ -345,7 +338,7 @@ contract SssssmokinFinance is Ownable {
         if (benefits.credit < reqireMargin) {
             revert NotEnoughCredit();
         }
-        
+
         // 數量 乘上允許借貸比例
         uint256 validAmount = (amount * benefits.ratio) / 100;
         // 由預言機取得數值 轉換借貸比例可以取得多少 wei
@@ -450,6 +443,27 @@ contract SssssmokinFinance is Ownable {
 
         uint256 linkPrice = uint256(price);
         uint256 exchange = (amount * (10 ** tarDecimals)) / linkPrice;
+
+        return exchange;
+    }
+
+    function getTokenExchange(address token, uint256 amount) public view returns(uint256) {
+        // 由預言機取得數值
+        AggregatorV3Interface feed = AggregatorV3Interface(ethPricefeed);
+        uint8 feedDecimals = feed.decimals();
+        (, int256 price, , , ) = feed.latestRoundData();
+        if (price < 0) {
+            revert InvalidPrice();
+        }
+
+        uint256 linkPrice = uint256(price);
+        uint256 exchange = (amount * (10 ** feedDecimals)) / linkPrice;
+
+        IERC20EX tar = IERC20EX(token);
+        uint8 decimal = tar.decimals();
+        if (decimal < 18) {
+            exchange /= (10 ** (18 - decimal));
+        }
 
         return exchange;
     }

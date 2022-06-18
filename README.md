@@ -5,8 +5,8 @@
 <img width="467" alt="Screen Shot 2022-06-18 at 2 23 08 PM" src="https://user-images.githubusercontent.com/12673100/174425727-90821eae-5509-4db7-80f2-d9e389d495d3.png">
 
 Website: [shopbank.org](https://main--helpful-swan-2b57f4.netlify.app/) </br>
-Twitter: [@ShopbankProtocol](https://main--helpful-swan-2b57f4.netlify.app/) </br>
-Discord: [Shopbank](https://main--helpful-swan-2b57f4.netlify.app/) </br>
+Twitter: [@ShopbankProtocol](http://tobecontinuedcomic.com/) </br>
+Discord: [Shopbank](http://tobecontinuedcomic.com/) </br>
 
 ## Talk agenda on 2022.06.22
 

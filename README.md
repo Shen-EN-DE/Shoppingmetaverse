@@ -1,8 +1,11 @@
-# Create React App Example
+# Shopbank
+visit [app.shopbank.org](...田我們的ui url)
 
-This examples uses [Create React App](https://create-react-app.dev).
 
-Table of Contents
+## Talk agenda on 2022.06.22
+
+
+Whitepaper 
 =================
 * [Shopbank Whiteaper](#shopbank-Whiteaper)
    * [Abstract](#abstract)
@@ -49,6 +52,10 @@ Shopbank 作為電商3.0的領頭羊，我們希望打造出您最佳的web3.0�
 
 ### DAO 投票
 我們賦予具有一定代幣數量的顧客投票權利，因為他們是實際活躍的群族，並透過凍結品牌方的保證金來保證確實執行社群提案。
+
+## Roadmap
+
+## About Team
 
 
 [Product Draft](https://hackmd.io/UG_X0y9xT4m8g15bBJwxww?both)

@@ -1,9 +1,9 @@
 # Shopbank - EC3.0 with Metaverse
 <img width="467" alt="Screen Shot 2022-06-18 at 2 23 08 PM" src="https://user-images.githubusercontent.com/12673100/174425727-90821eae-5509-4db7-80f2-d9e389d495d3.png">
 
-Website: [uniswap.org](...田我們的ui url)
-Twitter: [@UniswapProtocol]((...田我們的ui url)
-Discord: [Uniswap](...田我們的ui url)
+Website: [uniswap.org](https://main--helpful-swan-2b57f4.netlify.app/) </br>
+Twitter: [@UniswapProtocol](https://main--helpful-swan-2b57f4.netlify.app/) </br>
+Discord: [Uniswap](https://main--helpful-swan-2b57f4.netlify.app/) </br>
 
 ## Talk agenda on 2022.06.22
 
@@ -57,6 +57,10 @@ Shopbank 作為電商3.0的領頭羊，我們希望打造出您最佳的web3.0�
 我們賦予具有一定代幣數量的顧客投票權利，因為他們是實際活躍的群族，並透過凍結品牌方的保證金來保證確實執行社群提案。
 
 ## Roadmap
+### 2022-Q2
+From zero to one
+
+### 
 
 ## About Team
 

@@ -18,17 +18,17 @@ export const config = {
         validityTime: moment().add(8, 'd').unix(),
         credit: 1
     },
-        // {
-        //     ratio: 70,
-        //     apr: 7,
-        //     validityTime: moment().add(9, 'd').unix(),
-        //     credit: 2
-        // }, {
-        //     ratio: 80,
-        //     apr: 6,
-        //     validityTime: moment().add(10, 'd').unix(),
-        //     credit: 2
-        // },
+    {
+        ratio: 70,
+        apr: 7,
+        validityTime: moment().add(9, 'd').unix(),
+        credit: 2
+    }, {
+        ratio: 80,
+        apr: 6,
+        validityTime: moment().add(10, 'd').unix(),
+        credit: 2
+    },
     ]
 }
 // sup: usdt, curve, aave

@@ -17,36 +17,56 @@ const CONTRACT_ABI = SssssmokinFinance.abi
 const CONTRACT_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
 
 const Lending = () => {
-    const { data: addedPT, isError: mintError, isLoading: isMintLoading, write: addProvideTokens } = useContractWrite(
-        {
-            addressOrName: CONTRACT_ADDRESS,
-            contractInterface: CONTRACT_ABI,
-        },
-        'addProvideTokens'
-    )
-    const { data: addedBF, write: setBenifist } = useContractWrite(
-        {
-            addressOrName: CONTRACT_ADDRESS,
-            contractInterface: CONTRACT_ABI,
-        },
-        'setBenifist'
-    )
+    const allBenefits = localStorage.getItem('allBenefits')
+    const provider = useProvider();
 
-    // const { data: dd } = useContractRead(
+    // const { data: addedPT, isError: mintError, isLoading: isMintLoading, write: setProvideTokens } = useContractWrite(
     //     {
     //         addressOrName: CONTRACT_ADDRESS,
-    //         contractInterface: CONTRACT_ABI
+    //         contractInterface: CONTRACT_ABI,
     //     },
-    //     'test',
-    //     { watch: true },
-    //     { args: 0 }
+    //     'setProvideTokens'
+    // )
+
+
+    const [{ data: _allBenefits }, getAllBenifits] = useContractRead(
+        {
+            addressOrName: CONTRACT_ADDRESS,
+            contractInterface: CONTRACT_ABI,
+            signerOrProvider: provider,
+        },
+        "getAllBenifits"
+    )
+
+    // const [{ }, setBenifist] = useContractWrite(
+    //     {
+    //         addressOrName: CONTRACT_ADDRESS,
+    //         contractInterface: CONTRACT_ABI,
+    //         signerOrProvider: provider,
+    //     },
+    //     "setBenifist"
     // )
 
     useEffect(() => {
-        // if (setBenifist) Promise.all(config.memberBenefits.map((bf, i) => setBenifist({ args: [i + 1, bf] })));
-        // if (addProvideTokens) Promise.all(config.supportedToken.map((token) => addProvideTokens({ args: token })))
+        // const set = async () => {
+        //     try {
+        //         const res = await setBenifist({ args: [1, config.memberBenefits[1]] })
+        //         const res1 = await setBenifist({ args: [2, config.memberBenefits[2]] })
+        //         const res2 = await setBenifist({ args: [3, config.memberBenefits[3]] })
+        //         console.log(res)
+        //     } catch (error) {
+        //         console.log(error)
+        //     }
+
+        // }
+        // set()
+        getAllBenifits().then(res => console.log(res)).catch(err => console.error(err))
+
+        localStorage.setItem('allBenefits', true)
+
 
     }, [])
+
 
     return (
         <Container>
@@ -56,7 +76,7 @@ const Lending = () => {
                         <form className="main_form">
                             <Row>
                                 <Col sm={12}>
-                                    <select placeholder='選擇抵押貨幣種類' className='contactus'>{config.supportedToken.map(el => <option key={el}>{el}</option>)}</select>
+                                    <select placeholder='選擇抵押貨幣種類' className='contactus'>{config.supportedToken.map((el, i) => <option key={`${el}-${i}`}>{el}</option>)}</select>
 
                                 </Col>
                                 <Col sm={12}>

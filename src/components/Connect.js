@@ -1,4 +1,4 @@
-import { useConnect, useDisconnect } from 'wagmi'
+import { useConnect } from 'wagmi'
 
 export function Connect() {
   const {
@@ -10,7 +10,6 @@ export function Connect() {
     pendingConnector,
   } = useConnect()
 
-  const { disconnect } = useDisconnect()
 
   return (
     <div>

@@ -1,20 +1,19 @@
 import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
-import { useConnect, useDisconnect } from 'wagmi'
+import { useConnect } from 'wagmi'
 import Hero from '../../style/images/img.png'
 
 
 const Landing = () => {
-    const {
-        activeConnector,
+    const [
+        {
+            data: { connector, connectors },
+            error,
+            loading,
+        },
         connect,
-        connectors,
-        error,
-        isConnecting,
-        pendingConnector,
-    } = useConnect()
-    const { disconnect } = useDisconnect()
-
+    ] = useConnect()
+    console.log(connectors)
     return (
         <section className='banner_main'>
             <Container>
@@ -26,21 +25,21 @@ const Landing = () => {
                             <p>1232432</p>
                             <Row>
                                 <Col>
-                                    {connectors
-                                        .map((x) => (
-                                            <a key={x.id} onClick={() => connect(x)}>
-                                                Connect to {x.name}
-                                                {isConnecting && x.id === pendingConnector?.id && ' (connecting)'}
-                                            </a>
-                                        ))}
+                                    {connectors.map((x, i) => (
+                                        <a disabled={!x.ready} key={`${x.name}-${i}`} onClick={() => connect(x)}>
+                                            {x.name}
+                                            {!x.ready && ' (unsupported)'}
+                                            {loading && x.name === connector?.name && '…'}
+                                        </a>
+                                    ))}
                                 </Col>
-                                <Col>
+                                {/* <Col>
                                     {activeConnector && (
                                         <a onClick={() => disconnect()}>
                                             Disconnect from {activeConnector.name}
                                         </a>
                                     )}
-                                </Col>
+                                </Col> */}
                             </Row>
                         </div>
                         <span>Awesome</span>

@@ -1,5 +1,6 @@
 # Shopbank - EC3.0 with Metaverse
-![Uploading Screen Shot 2022-06-18 at 2.39.06 PM.png…]()
+<img width="1118" alt="Screen Shot 2022-06-18 at 2 39 51 PM" src="https://user-images.githubusercontent.com/12673100/174426179-bcd76e16-dc7f-462e-a0f0-3a48dcc72e05.png">
+
 
 <img width="467" alt="Screen Shot 2022-06-18 at 2 23 08 PM" src="https://user-images.githubusercontent.com/12673100/174425727-90821eae-5509-4db7-80f2-d9e389d495d3.png">
 

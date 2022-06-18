@@ -102,8 +102,10 @@ contract SssssmokinFinance is Ownable {
 
     receive() external payable {}
 
-    constructor() {
+    constructor(address shrimptoken, address memberToken) {
         setETHChainLink(0x8A753747A1Fa494EC906cE90E9f37563A8AF630e);
+        weeeeToken = IERC20(shrimptoken);
+        membershipTokenContract = IERC1155(memberToken);
     }
 
     // 檢查是否支持的貨幣
@@ -168,6 +170,14 @@ contract SssssmokinFinance is Ownable {
                 provideTokensArray.pop();
             }
         }
+    }
+
+    function setShrimpToken(address token) public onlyOwner {
+        weeeeToken = IERC20(token);
+    }
+
+    function setMemberToken(address token) public onlyOwner {
+        membershipTokenContract = IERC1155(token);
     }
 
     // 設置會員卡排序 高到低 很少會異動 數量也很少 直接設置整個

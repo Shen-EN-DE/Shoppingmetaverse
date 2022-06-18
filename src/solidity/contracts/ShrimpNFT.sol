@@ -65,7 +65,7 @@ contract ShrimpNFT is ERC1155, Ownable, ERC1155Burnable  {
             return "Get Silver_Shrimp";
 
         }else if(ShrimpNFTLevel == 3){
-            //safeTransferFrom(ContractOwner,msg.sender,2,1,"");
+            
             _mint(msg.sender,2, 1, "");
             return "Get Golden_Shrimp";
             

@@ -27,6 +27,7 @@ error InvalidChainlinkAdrress();
 error InvalidPrice();
 
 contract SssssmokinFinance is Ownable {
+
     event DepositForTokenSuccess(
         uint256 indexed amount,
         address indexed token,
@@ -169,9 +170,21 @@ contract SssssmokinFinance is Ownable {
         tokenIdOrder = order;
     }
 
+    function getTokenIdOrder() public view returns(uint256[] memory) {
+        return tokenIdOrder;
+    }
+
     // 設置會員福利 考慮到應該很少使用 真的需要單獨設置 再添加
     function setBenefits(uint256 tokenId, Benefits calldata benefits) public {
         membershipBenefits[tokenId] = benefits;
+    }
+
+    function setMultiBenefits(uint256[] calldata tokenId, Benefits[] calldata benefits) public {
+        require(tokenId.length == benefits.length, "array length not match");
+
+        for (uint i = 0; i < tokenId.length; i++) {
+            membershipBenefits[tokenId[i]] = benefits[i];
+        } 
     }
 
     // 移除會員福利
@@ -193,6 +206,10 @@ contract SssssmokinFinance is Ownable {
             benefits[i] = membershipBenefits[tokenIdOrder[i]];
         }
         return benefits;
+    }
+
+    function getAllOrderAndBenefits() public view returns (uint256[] memory, Benefits[] memory) {
+        return (tokenIdOrder, getAllBenefits());
     }
 
     // 取得指定會員NFT福利
@@ -288,6 +305,7 @@ contract SssssmokinFinance is Ownable {
         // ((amount / 10**18) * (benefits.ratio / 100)) / (linkPrice / (10 ** tarDecimals))
         // (amount * benefits.ratio) / (linkPrice * 10 ** (20 - tarDecimals));
         // 數量 乘上抵押率
+        // 1 / (linkPrice / tarD) =  10**18 
         uint256 exchange = (amount * benefits.ratio) /
             (linkPrice * (10**uint256(20 - tarDecimals)));
         IERC20 tar = IERC20(token);
@@ -327,21 +345,11 @@ contract SssssmokinFinance is Ownable {
         if (benefits.credit < reqireMargin) {
             revert NotEnoughCredit();
         }
-
-        // 由預言機取得數值
-        AggregatorV3Interface feed = AggregatorV3Interface(ethPricefeed);
-        uint8 tarDecimals = feed.decimals();
-        (, int256 price, , , ) = feed.latestRoundData();
-        if (price < 0) {
-            revert InvalidPrice();
-        }
-
-        uint256 linkPrice = uint256(price);
-        // ((amount / 10**18) * (benefits.ratio / 100)) / (linkPrice / (10 ** tarDecimals))
-        // (amount * benefits.ratio) / (linkPrice * 10 ** (20 - tarDecimals));
-        // 數量 乘上抵押率
-        uint256 exchange = (amount * benefits.ratio) /
-            (linkPrice * (10**uint256(20 - tarDecimals)));
+        
+        // 數量 乘上允許借貸比例
+        uint256 validAmount = (amount * benefits.ratio) / 100;
+        // 由預言機取得數值 轉換借貸比例可以取得多少 wei
+        uint256 exchange = getExchangeWei(validAmount);
         address me = address(this);
         if (me.balance < exchange) {
             revert NotEnoughStock();
@@ -429,6 +437,21 @@ contract SssssmokinFinance is Ownable {
         uint8 decimals = feed.decimals();
         (, int256 price, , , ) = feed.latestRoundData();
         return (price, decimals);
+    }
+
+    function getExchangeWei(uint256 amount) public view returns(uint256) {
+        // 由預言機取得數值
+        AggregatorV3Interface feed = AggregatorV3Interface(ethPricefeed);
+        uint8 tarDecimals = feed.decimals();
+        (, int256 price, , , ) = feed.latestRoundData();
+        if (price < 0) {
+            revert InvalidPrice();
+        }
+
+        uint256 linkPrice = uint256(price);
+        uint256 exchange = (amount * (10 ** tarDecimals)) / linkPrice;
+
+        return exchange;
     }
 
     /*

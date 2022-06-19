@@ -1,4 +1,4 @@
-# Shopbank - EC3.0 with Metaverse
+# Ourshop - Shopping in the metaverse
 <img width="1118" alt="Screen Shot 2022-06-18 at 2 39 51 PM" src="https://user-images.githubusercontent.com/12673100/174426179-bcd76e16-dc7f-462e-a0f0-3a48dcc72e05.png">
 
 

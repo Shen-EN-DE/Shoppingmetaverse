@@ -4,15 +4,15 @@
 
 <img width="467" alt="Screen Shot 2022-06-18 at 2 23 08 PM" src="https://user-images.githubusercontent.com/12673100/174425727-90821eae-5509-4db7-80f2-d9e389d495d3.png">
 
-Website: [shopbank.org](https://main--helpful-swan-2b57f4.netlify.app/) </br>
-Twitter: [@ShopbankProtocol](http://tobecontinuedcomic.com/) </br>
-Discord: [Shopbank](http://tobecontinuedcomic.com/) </br>
+Website: [ourshop.org](https://main--helpful-swan-2b57f4.netlify.app/) </br>
+Twitter: [@OurshopProtocol](http://tobecontinuedcomic.com/) </br>
+Discord: [Ourshop](http://tobecontinuedcomic.com/) </br>
 
 ## Talk agenda on 2022.06.22
 
-# Shopbank Whiteaper
+# Ourshop Whiteaper
 * [Abstract](#abstract)
-   * [Why Shopbank](#why-shopbank)
+   * [Why Ourshop](#why-Ourshop)
       * [For users](#for-users)
       * [For 電商品牌方](#for-電商品牌方)
    * [Architecture](#architecture)
@@ -25,13 +25,13 @@ Discord: [Shopbank](http://tobecontinuedcomic.com/) </br>
    * [About Team](#about-team)
 
 ## Abstract
-我們看準了未來電商 3.0 的趨勢，我們建立了 Shopbank，以顛覆傳統電商2.0生態圈為我們的產品理念。<br>
-Shopbank 作為電商3.0的領頭羊，我們希望打造出您最佳的web3.0橋樑。 <br>
+我們看準了未來電商 3.0 的趨勢，我們建立了 Ourshop，以顛覆傳統電商2.0生態圈為我們的產品理念。<br>
+Ourshop 作為電商3.0的領頭羊，我們希望打造出您最佳的web3.0橋樑。 <br>
 我們高度信任電商對於滿足終端消費者的能力，然而在電商能否生存的關鍵指標則在於——顧客的忠誠度 <br>
 而web3.0的崛起，正好改變了品牌與顧客之間的互動模式，我們能更好的激勵顧客與品牌互動，建立鞏固的社群關係。<br>
 我們所提供的服務包含，價值轉移、代幣借貸、永續成就、DAO投票 <br>
 
-## Why Shopbank
+## Why Ourshop
 ### For users
 - 活化點數
     - 在傳統電商上，顧客獲得的點數只能拿來折下次消費的金額折扣。

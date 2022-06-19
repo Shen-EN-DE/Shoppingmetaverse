@@ -6,19 +6,35 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "./OracleEthUsd.sol";
 
+// Chain link Oracle
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 import "hardhat/console.sol";
 
+error NotProvideToken();
+error InvalidPrice();
+
 
 contract ShrimpToken is ERC20{
-    
+
+
     uint constant SECONDS_PER_DAY = 24 * 60 * 60;
     int constant OFFSET19700101 = 2440588;
 
     uint public people = 0;
+    
+    //用的的mappinglist
     mapping(address => mapping(uint256 => Customer)) public customerList;
+    //是否是owner
     address public shrimpOwner;
+
+    address private ethPricefeed; //eth/usd  address
+
+ // 支持的加密貨幣 // ERC20 Token address => Chainlink Token/USD Feed Data Address
+    mapping(address => address) private provideTokens;
+
 
     enum Level{Novice, copper, silver, gold}
 
@@ -33,12 +49,12 @@ contract ShrimpToken is ERC20{
     uint256 private initialGiveToken = 0;
     uint256 private ThresholdAmount = 0;
     uint256 public ShrimpBuyToken =0;
-    
 
     mapping(address => bool) public isOwner; //是否是管理層
     address[] public owners;
 
     uint public initialSupply = 10**18;
+    AggregatorV3Interface internal priceFeed;
 
 
     modifier onlyOwner() {
@@ -50,11 +66,14 @@ contract ShrimpToken is ERC20{
 
     constructor(address[] memory _owners) ERC20("Shrimp","SPT"){
 
+
+
         _mint(msg.sender, initialSupply); //初始金額
         shrimpOwner = msg.sender; //shrimpOwner 是蝦幣的使用者
     
 
         thismonth = _daysToDate(block.timestamp / SECONDS_PER_DAY);
+
 
 
         require(_owners.length > 0, "owners required");
@@ -68,8 +87,12 @@ contract ShrimpToken is ERC20{
             owners.push(owner);
         }
 
+
+
     }
 
+
+    //給用戶token
     function GiveToken(address customerAddr, uint256 amount) public onlyOwner(){
         
 
@@ -89,6 +112,7 @@ contract ShrimpToken is ERC20{
 
     }
 
+    //判斷customerAddr用戶升級，並取得銅銀金
     function isLevel(address customerAddr) public returns(uint LevelCount){
         require(customerList[customerAddr][thismonth].thresholdAmount >= 100, "not enough token");
 
@@ -116,14 +140,35 @@ contract ShrimpToken is ERC20{
 
     }
 
-    function BuyToken(address customerAddr, uint256 amount) public payable{
 
-        require(msg.value > 0, "send ETH to buy some tokens");
+    //buytoken 花多少錢購買
+    function BuyToken() public payable{
+        require(msg.value>0, "please send some ETH");
+        // // 由預言機取得數值
+        // AggregatorV3Interface feed = AggregatorV3Interface(0x8A753747A1Fa494EC906cE90E9f37563A8AF630e);
+        // (, int256 price, , , ) = feed.latestRoundData();
 
-        _transfer(shrimpOwner,customerAddr, amount);
+        // price = price/100000000;
+
+        uint256 amountTobuy = msg.value;
+        
+        uint256 setprice = 2;
+        //使用以太幣購買shrimp
+        uint amount = amountTobuy / uint256(setprice);
+
+
+
+        _transfer(shrimpOwner,msg.sender, amount);
         ShrimpBuyToken = ShrimpBuyToken + amount;
 
+
+
+
+
     }
+
+
+
 
     function _daysToDate(uint _days) internal pure returns (uint month) {
         int __days = int(_days);

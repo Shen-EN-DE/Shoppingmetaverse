@@ -66,26 +66,22 @@ OurShop 作為電商3.0的領頭羊，我們希望打造出您最佳的web3.0橋
 #### Level1:
     1.平台加密貨幣(PT)
     2.NFT會員卡
-    3.借貸機制
-    
-    ![1](https://user-images.githubusercontent.com/56148794/174980915-423a4f0c-c954-4194-9619-dd4329479ba9.jpg)
-    ![2](https://user-images.githubusercontent.com/56148794/174980929-909d19a6-802f-423d-8fa6-a0a61d623f8a.jpg)
-
+    3.借貸機制   
+![1](https://user-images.githubusercontent.com/56148794/174981253-8183ebfe-15af-4c6d-bf82-8122216d95a5.jpg)
+![2](https://user-images.githubusercontent.com/56148794/174981270-a0b2ef66-ad94-423a-8a67-d2a82742f212.jpg)
 
 #### Level2:
     1.PT專屬商城
     2.NFT勳章
     3.一次性使用的NFT
     4.會員投票功能
-    
-    ![3](https://user-images.githubusercontent.com/56148794/174980969-99d1063c-a6f1-44e6-a28b-d5e8145c9e94.jpg)
-    ![4](https://user-images.githubusercontent.com/56148794/174980995-1d53fced-92e5-4fe9-9dea-820bd3c9828e.jpg)
+![3](https://user-images.githubusercontent.com/56148794/174981296-aa9135c6-70f4-4aa3-af0c-9c54d526991a.jpg)
+![4](https://user-images.githubusercontent.com/56148794/174981306-8741e158-7de4-43d3-a194-85b5a319c292.jpg)
 
 #### Level3:
     1.元宇宙NFT商城
     2.時裝系統
-    
-    ![5](https://user-images.githubusercontent.com/56148794/174981048-23593469-2231-4ebc-abeb-1c920007b86a.jpg)
+![5](https://user-images.githubusercontent.com/56148794/174981340-b219ad41-076b-400f-b673-2e3bc2d80310.jpg)
 
 ## About Team
 

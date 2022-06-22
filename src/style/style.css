@@ -140,7 +140,7 @@ tr>th {
     display: block;
 }
 
-.currentLevel>td {
+.current-level>td {
     background-color: #fff !important;
     color: #ef4259 !important;
     box-shadow: none !important;
@@ -168,6 +168,10 @@ a,
     -ms-transition: all .3s ease-in-out;
     -o-transition: all .3s ease-in-out;
     transition: all .3s ease-in-out;
+}
+
+td>img {
+    width: 2rem;
 }
 
 img {
@@ -340,7 +344,7 @@ button {
     background: #0c0f38;
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    padding-bottom: 90px;
+    padding-bottom: 12rem;
 }
 
 .text-bg h1 {
@@ -521,11 +525,7 @@ button {
     padding: 10px 0px;
     width: 100%;
     max-width: 190px;
-    display: flex;
-    justify-content: center;
     text-align: center;
-    margin: 0 auto;
-    margin-top: 20px;
 }
 
 .read_more:hover {
@@ -615,7 +615,6 @@ button {
 .contact {
     padding-top: 90px;
     font-family: Poppins;
-    height: 32.5rem
 }
 
 .main_form {
@@ -625,7 +624,7 @@ button {
     margin-bottom: -58%;
 }
 
-.contact .main_form .contactus {
+.contactus {
     border: #fff solid 1px;
     padding: 0px 19px;
     margin-bottom: 20px;
@@ -737,5 +736,38 @@ button {
     color: #0c0f38;
 }
 
+.table_container {
+    background: #0c0f38;
+    padding: 2rem;
+    border-radius: 30px;
+}
+
+.table_container>h6 {
+    color: white
+}
+
+.table_container>h5 {
+    color: white
+}
+
+.ml-1 {
+    margin-left: 1rem;
+}
+
+.ml-2 {
+    margin-left: 2rem;
+}
+
+.btn-group-right {
+    text-align: right;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.medal {
+    width: 8rem;
+}
 
 /** end footer **/

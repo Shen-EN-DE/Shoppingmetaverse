@@ -1,38 +1,36 @@
 import moment from "moment";
 
-
 export const config = {
     infuraId: '61215055bc184343a0c558fde59fa107',
-    supportedToken: ['0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
-        '0xD533a949740bb3306d119CC777fa900bA034cd52',
-        '0x514910771AF9Ca656af840dff83E8264EcF986CA'],
-    chainLink: ['0x547a514d5e3769680Ce22B2361c10Ea13619e8a9',
-        '0x9441D7556e7820B5ca42082cfa99487D56AcA958',
-        '0xCd627aA160A6fA45Eb793D19Ef54f5062F20f33f'],
-    memberBenefits: [{
-        ratio: 50,
-        apr: 9,
-        validityTime: moment().add(7, 'd').unix(),
-        credit: 1
-    },
-    {
-        ratio: 60,
-        apr: 8,
-        validityTime: moment().add(8, 'd').unix(),
-        credit: 1
-    },
-    {
-        ratio: 70,
-        apr: 7,
-        validityTime: moment().add(9, 'd').unix(),
-        credit: 2
-    }, {
-        ratio: 80,
-        apr: 6,
-        validityTime: moment().add(10, 'd').unix(),
-        credit: 2
-    },
-    ]
+    supportedToken: [{ tokenAddr: '0x030b0a08eCaDdE5Ac33859a48d87416946C966A1', symbol: 'BNB' },
+    { tokenAddr: '0xD2084eA2AE4bBE1424E4fe3CDE25B713632fb988', symbol: 'BAT' },
+    // { tokenAddr: '0xbbEB7c67fa3cfb40069D19E598713239497A3CA5', symbol: 'COMP' },
+    { tokenAddr: '', symbol: 'ETH' },
+    ],
+    chainLink: ['0xcf0f51ca2cDAecb464eeE4227f5295F2384F84ED',
+        '0x031dB56e01f82f20803059331DC6bEe9b17F7fC9',
+        //    '0xdbd020CAeF83eFd542f4De03e3cF0C28A4428bd5'
+    ],
+    memberBenefits: {
+        Copper: {
+            ratio: 50,
+            apr: 9,
+            validityTime: moment().add(7, 'd').unix(),
+            credit: 10000000
+        },
+        Silver: {
+            ratio: 60,
+            apr: 8,
+            validityTime: moment().add(8, 'd').unix(),
+            credit: 20000000
+        },
+        Golden: {
+            ratio: 70,
+            apr: 7,
+            validityTime: moment().add(9, 'd').unix(),
+            credit: 30000000
+        },
+    }
 }
 // sup: usdt, curve, aave
 

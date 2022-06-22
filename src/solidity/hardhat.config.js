@@ -21,7 +21,8 @@ module.exports = {
   networks: {
     rinkeby: {
       url: "https://rinkeby.infura.io/v3/61215055bc184343a0c558fde59fa107",
-      accounts: ["8f9449dd486083bfbd8bf0fc44891d02e22f1f6bb0a863184c764962a1ff7795"]
+      accounts: ["8f9449dd486083bfbd8bf0fc44891d02e22f1f6bb0a863184c764962a1ff7795"],
+      gasPrice: 8000000000,
     },
     // hardhat: {
     //   chainId: 1337

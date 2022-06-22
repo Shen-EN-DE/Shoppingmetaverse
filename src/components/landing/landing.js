@@ -1,7 +1,9 @@
 import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
-import { useConnect } from 'wagmi'
+import { Link } from 'react-router-dom'
+import { routes } from '../../pages/routes'
 import Hero from '../../style/images/img.png'
+import bg from '../../style/images/test.png'
 
 
 const Landing = () => {
@@ -12,23 +14,14 @@ const Landing = () => {
                 <Row>
                     <Col md={5}>
                         <div className='text-bg'>
-                            <h1>The points pawn shop</h1>
-                            <span>sub title</span>
-                            <p>1232432</p>
-                            <Row>
-                                <Col>
+                            <h1>Shopbank</h1>
+                            <span>未來電商 3.0</span>
+                            <p>價值轉移、代幣借貸、永續成就、DAO投票</p>
+                            <Link to={routes.staking}>開始體驗</Link>
 
-                                </Col>
-                                {/* <Col>
-                                    {activeConnector && (
-                                        <a onClick={() => disconnect()}>
-                                            Disconnect from {activeConnector.name}
-                                        </a>
-                                    )}
-                                </Col> */}
-                            </Row>
                         </div>
                         <span>Awesome</span>
+
                     </Col>
                     <Col md={7}>
                         <div className='text-img'>

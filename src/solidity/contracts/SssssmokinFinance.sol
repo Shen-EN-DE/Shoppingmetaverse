@@ -8,9 +8,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 // Chain link Oracle
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
-
 interface IERC20EX is IERC20 {
-   function decimals() external view returns (uint8);
+    function decimals() external view returns (uint8);
 }
 
 // 不支援的貨幣
@@ -32,7 +31,6 @@ error InvalidChainlinkAdrress();
 error InvalidPrice();
 
 contract SssssmokinFinance is Ownable {
-
     event DepositForTokenSuccess(
         uint256 indexed amount,
         address indexed token,
@@ -180,12 +178,14 @@ contract SssssmokinFinance is Ownable {
         membershipTokenContract = IERC1155(token);
     }
 
+    //   [copper, silver, golden]
+    //    tokenId [0,1,2]
     // 設置會員卡排序 高到低 很少會異動 數量也很少 直接設置整個
     function setTokenIdOrder(uint256[] calldata order) public {
         tokenIdOrder = order;
     }
 
-    function getTokenIdOrder() public view returns(uint256[] memory) {
+    function getTokenIdOrder() public view returns (uint256[] memory) {
         return tokenIdOrder;
     }
 
@@ -194,12 +194,15 @@ contract SssssmokinFinance is Ownable {
         membershipBenefits[tokenId] = benefits;
     }
 
-    function setMultiBenefits(uint256[] calldata tokenId, Benefits[] calldata benefits) public {
+    function setMultiBenefits(
+        uint256[] calldata tokenId,
+        Benefits[] calldata benefits
+    ) public {
         require(tokenId.length == benefits.length, "array length not match");
 
-        for (uint i = 0; i < tokenId.length; i++) {
+        for (uint256 i = 0; i < tokenId.length; i++) {
             membershipBenefits[tokenId[i]] = benefits[i];
-        } 
+        }
     }
 
     // 移除會員福利
@@ -223,7 +226,11 @@ contract SssssmokinFinance is Ownable {
         return benefits;
     }
 
-    function getAllOrderAndBenefits() public view returns (uint256[] memory, Benefits[] memory) {
+    function getAllOrderAndBenefits()
+        public
+        view
+        returns (uint256[] memory, Benefits[] memory)
+    {
         return (tokenIdOrder, getAllBenefits());
     }
 
@@ -302,6 +309,9 @@ contract SssssmokinFinance is Ownable {
     {
         Benefits memory benefits = getSenderBenefits();
         uint256 reqireMargin = getSenderMargin() + amount;
+        // credit 可能的值
+        // requireMargin 可能的值
+
         if (benefits.credit < reqireMargin) {
             revert NotEnoughCredit();
         }
@@ -349,6 +359,9 @@ contract SssssmokinFinance is Ownable {
             revert NotEnoughCredit();
         }
 
+        //
+        // 100000 * 0.5 *
+        // ratio : 50
         // 數量 乘上允許借貸比例
         uint256 validAmount = (amount * benefits.ratio) / 100;
         // 由預言機取得數值 轉換借貸比例可以取得多少 wei
@@ -442,7 +455,7 @@ contract SssssmokinFinance is Ownable {
         return (price, decimals);
     }
 
-    function getExchangeWei(uint256 amount) public view returns(uint256) {
+    function getExchangeWei(uint256 amount) public view returns (uint256) {
         // 由預言機取得數值
         AggregatorV3Interface feed = AggregatorV3Interface(ethPricefeed);
         uint8 tarDecimals = feed.decimals();
@@ -452,12 +465,16 @@ contract SssssmokinFinance is Ownable {
         }
 
         uint256 linkPrice = uint256(price);
-        uint256 exchange = (amount * (10 ** tarDecimals)) / linkPrice;
+        uint256 exchange = (amount * (10**tarDecimals)) / linkPrice;
 
         return exchange;
     }
 
-    function getTokenExchange(address token, uint256 amount) public view returns(uint256) {
+    function getTokenExchange(address token, uint256 amount)
+        public
+        view
+        returns (uint256)
+    {
         // 由預言機取得數值
         AggregatorV3Interface feed = AggregatorV3Interface(ethPricefeed);
         uint8 feedDecimals = feed.decimals();
@@ -467,12 +484,12 @@ contract SssssmokinFinance is Ownable {
         }
 
         uint256 linkPrice = uint256(price);
-        uint256 exchange = (amount * (10 ** feedDecimals)) / linkPrice;
+        uint256 exchange = (amount * (10**feedDecimals)) / linkPrice;
 
         IERC20EX tar = IERC20EX(token);
         uint8 decimal = tar.decimals();
         if (decimal < 18) {
-            exchange /= (10 ** (18 - decimal));
+            exchange /= (10**(18 - decimal));
         }
 
         return exchange;

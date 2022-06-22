@@ -63,10 +63,29 @@ OurShop 作為電商3.0的領頭羊，我們希望打造出您最佳的web3.0橋
 我們賦予具有一定代幣數量的顧客投票權利，因為他們是實際活躍的群族，並透過凍結品牌方的保證金來保證確實執行社群提案。
 
 ## Roadmap
-### 2022-Q2
-From zero to one
+#### Level1:
+    1.平台加密貨幣(PT)
+    2.NFT會員卡
+    3.借貸機制
+    
+    ![1](https://user-images.githubusercontent.com/56148794/174980915-423a4f0c-c954-4194-9619-dd4329479ba9.jpg)
+    ![2](https://user-images.githubusercontent.com/56148794/174980929-909d19a6-802f-423d-8fa6-a0a61d623f8a.jpg)
 
-### 
+
+#### Level2:
+    1.PT專屬商城
+    2.NFT勳章
+    3.一次性使用的NFT
+    4.會員投票功能
+    
+    ![3](https://user-images.githubusercontent.com/56148794/174980969-99d1063c-a6f1-44e6-a28b-d5e8145c9e94.jpg)
+    ![4](https://user-images.githubusercontent.com/56148794/174980995-1d53fced-92e5-4fe9-9dea-820bd3c9828e.jpg)
+
+#### Level3:
+    1.元宇宙NFT商城
+    2.時裝系統
+    
+    ![5](https://user-images.githubusercontent.com/56148794/174981048-23593469-2231-4ebc-abeb-1c920007b86a.jpg)
 
 ## About Team
 
